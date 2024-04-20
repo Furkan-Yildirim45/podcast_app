@@ -13,4 +13,11 @@ class InitHomePage{
     ];
     return trendingCardItems;
   }
+
+  List<String> initMenuItems(){
+    final List<String> menuItems = [
+      "All","Life","Comedy","Tech","Metal","classic"
+    ];
+    return menuItems;
+  }
 }

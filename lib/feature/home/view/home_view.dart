@@ -22,15 +22,19 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late final List<TrendingCardModel> trendingCardItems;
+  late final List<String> menuItems;
+  final int crossAxisCount = 2;
 
   @override
   void initState() {
     super.initState();
     trendingCardItems = InitHomePage().initTrendingCardValues();
+    menuItems = InitHomePage().initMenuItems();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(context.sized.dynamicHeigth(0.335).ceil());
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -42,57 +46,78 @@ class _HomeViewState extends State<HomeView> {
       body: SafeArea(
         child: Padding(
           padding: context.padding.mediumSymmetricHorizontal,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
-              SearchBar(
-                trailing: [
-                  Icon(Icons.search_outlined,size: context.iconSize.normal,),
-                ],
-                hintText: 'Search',
-              ),
-              Padding(
-                padding: context.padding.topOnlyMedium,
-                child: SizedBox(
-                  width: context.sized.width,
-                  height: context.sized.dynamicHeigth(0.06),
-                  child: ListView.builder(
-                    itemCount: 5,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return CustomHomeMenuWidget(index: index,);
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: context.padding.topOnlyNormal,
-                child: Text('Trending',style: context.general.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w600),),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: context.padding.topOnlyNormal,
-                  child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 5,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.75,
-                      crossAxisSpacing: context.sized.dynamicHeigth(0.02),
-                      mainAxisSpacing: context.sized.dynamicHeigth(0.02),
-                    ),
-                    itemBuilder: (context, index) {
-                      return CustomHomeTrendingCard(model: trendingCardItems[index],);
-                    },
-                  ),
-                ),
-              ),
+              _searchBar(context),
+              _menuPlace(context),
+              _trendingTextPlace(context),
+              _trendingCardGridViewPlace(context),
             ],
           ),
         ),
       ),
       bottomSheet: const HomePageBottomSheet(),
     );
+  }
+
+  SizedBox _trendingCardGridViewPlace(BuildContext context) {
+    var cardLengthCeil = (trendingCardItems.length / crossAxisCount).ceil();
+    var gridViewSpacingSize = context.sized.dynamicHeigth(0.02);
+    var cardConstHeight = context.sized.dynamicHeigth(0.335).ceil();
+    var trendingCardGeneralDynamicHeight = (cardLengthCeil + 3) * gridViewSpacingSize + cardConstHeight * cardLengthCeil + context.sized.normalValue;
+    return SizedBox(
+              width: context.sized.width,
+              height: trendingCardGeneralDynamicHeight,
+              child: Padding(
+                padding: context.padding.topOnlyNormal,
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: trendingCardItems.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: 0.75,
+                    crossAxisSpacing: gridViewSpacingSize,
+                    mainAxisSpacing: gridViewSpacingSize,
+                  ),
+                  itemBuilder: (context, index) {
+                    return CustomHomeTrendingCard(model: trendingCardItems[index],);
+                  },
+                ),
+              ),
+            );
+  }
+
+  Padding _trendingTextPlace(BuildContext context) {
+    return Padding(
+              padding: context.padding.topOnlyNormal,
+              child: Text('Trending',style: context.general.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w600),),
+            );
+  }
+
+  Padding _menuPlace(BuildContext context) {
+    return Padding(
+              padding: context.padding.topOnlyMedium,
+              child: SizedBox(
+                width: context.sized.width,
+                height: context.sized.dynamicHeigth(0.06),
+                child: ListView.builder(
+                  itemCount: menuItems.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return CustomHomeMenuWidget(index: index, menuTitle: menuItems[index], menuItemsLength: menuItems.length,);
+                  },
+                ),
+              ),
+            );
+  }
+
+  SearchBar _searchBar(BuildContext context) {
+    return SearchBar(
+              trailing: [
+                Icon(Icons.search_outlined,size: context.iconSize.normal,),
+              ],
+              hintText: 'Search',
+            );
   }
 }
 
