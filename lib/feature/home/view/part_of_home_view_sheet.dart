@@ -18,6 +18,7 @@ class _HomePageBottomSheetState extends State<HomePageBottomSheet> {
     TabItem(icon: Icons.library_music_outlined,title: HomePageBottomSheetItems.library.getTitle),
     TabItem(icon: Icons.person_2_outlined,title: HomePageBottomSheetItems.profile.getTitle),
   ];
+
   @override
   Widget build(BuildContext context) {
     return ConvexAppBar(

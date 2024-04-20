@@ -22,42 +22,24 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView> with _HomePageUtility{
   late final List<TrendingCardModel> trendingCardItems;
   late final List<String> menuItems;
   final int crossAxisCount = 2;
+  late InitHomePage initHomePage;
 
   @override
   void initState() {
     super.initState();
-    trendingCardItems = InitHomePage().initTrendingCardValues();
-    menuItems = InitHomePage().initMenuItems();
+    initHomePage = InitHomePage();
+    trendingCardItems = initHomePage.initTrendingCardValues();
+    menuItems = initHomePage.initMenuItems();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(context.sized.dynamicHeigth(0.335).ceil());
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text(
-          'Podkes',
-          style: context.general.textTheme.titleLarge
-              ?.copyWith(fontWeight: FontWeight.w600),
-        ),
-        leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.menu_outlined,
-              color: Colors.white,
-            )),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications_none_outlined))
-        ],
-      ),
+      appBar: _buildAppBar(context),
       body: SafeArea(
         child: Padding(
           padding: context.padding.mediumSymmetricHorizontal,
@@ -72,6 +54,29 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       bottomSheet: const HomePageBottomSheet(),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      centerTitle: true,
+      title: Text(
+        podcastText,
+        style: context.general.textTheme.titleLarge
+            ?.copyWith(fontWeight: FontWeight.w600),
+      ),
+      leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.menu_outlined,
+            color: Colors.white,
+          )),
+      actions: [
+        IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications_none_outlined))
+      ],
     );
   }
 
@@ -122,7 +127,7 @@ class _HomeViewState extends State<HomeView> {
     return Padding(
       padding: context.padding.topOnlyNormal,
       child: Text(
-        'Trending',
+        trendingText,
         style: context.general.textTheme.headlineMedium
             ?.copyWith(fontWeight: FontWeight.w600),
       ),
@@ -158,7 +163,14 @@ class _HomeViewState extends State<HomeView> {
           size: context.iconSize.normal,
         ),
       ],
-      hintText: 'Search',
+      hintText: searchBarHintText,
     );
   }
+}
+
+mixin _HomePageUtility{
+  var searchBarHintText = 'Search';
+  var trendingText = 'Trending';
+  var podcastText = 'Podkes';
+
 }
