@@ -18,6 +18,14 @@ class _ContextPaddingExtension{
           vertical: _context.sized.height * (vertical ?? 0.0),
           horizontal: _context.sized.height * (horizontal ?? 0.0));
 
+  EdgeInsets dynamicOnly({double? top,double? left, double? right,double? bottom}) =>
+      EdgeInsets.only(
+        top: _context.sized.height * (top ?? 0.0),
+        bottom: _context.sized.height * (bottom ?? 0.0),
+        right: _context.sized.height * (right ?? 0.0),
+        left: _context.sized.height * (left ?? 0.0),
+      );
+
   EdgeInsets get kZeroPadding => EdgeInsets.zero;
   EdgeInsets get allMedium => EdgeInsets.all(_valueMedium);
   EdgeInsets get allNormal => EdgeInsets.all(_valueNormal);

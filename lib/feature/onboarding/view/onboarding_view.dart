@@ -61,7 +61,7 @@ class OnBoardingView extends StatelessWidget {
                     _transitionPageCircle(context,normalValue,Colors.grey),
                     Padding(
                       padding: context.padding.dynamicSymmetric(horizontal: 0.01,),
-                      child: _transitionPageCircle(context,normalValue * 2.5,Color(0xff525298)),
+                      child: _transitionPageCircle(context,normalValue * 2.5,const Color(0xff525298)),
                     ),
                     _transitionPageCircle(context,normalValue,Colors.grey),
                   ],

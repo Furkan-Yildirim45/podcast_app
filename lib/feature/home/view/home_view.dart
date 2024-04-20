@@ -1,15 +1,33 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:musicapp/product/context/border_radius.dart';
 import 'package:musicapp/product/context/general.dart';
 import 'package:musicapp/product/context/icon_size.dart';
 import 'package:musicapp/product/context/padding.dart';
 import 'package:musicapp/product/context/size.dart';
+import 'package:musicapp/product/init/init_home_page.dart';
 
+import '../../../product/extension/home_page_sheet_items_extension.dart';
 import '../../../product/widget/custom_home_menu.dart';
 import '../../../product/widget/custom_home_trending_card.dart';
+import '../model/trending_card_model.dart';
 
-class HomeView extends StatelessWidget {
+part 'part_of_home_view_sheet.dart';
+
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  late final List<TrendingCardModel> trendingCardItems;
+
+  @override
+  void initState() {
+    super.initState();
+    trendingCardItems = InitHomePage().initTrendingCardValues();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +73,8 @@ class HomeView extends StatelessWidget {
                 child: Padding(
                   padding: context.padding.topOnlyNormal,
                   child: GridView.builder(
-                    itemCount: 6,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 5,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.75,
@@ -63,7 +82,7 @@ class HomeView extends StatelessWidget {
                       mainAxisSpacing: context.sized.dynamicHeigth(0.02),
                     ),
                     itemBuilder: (context, index) {
-                      return const CustomHomeTrendingCard();
+                      return CustomHomeTrendingCard(model: trendingCardItems[index],);
                     },
                   ),
                 ),
@@ -72,6 +91,8 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
+      bottomSheet: const HomePageBottomSheet(),
     );
   }
 }
+
