@@ -12,7 +12,7 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const OnBoardingView(),
+      home: OnBoardingView(),
       theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: const Color(0xff1f1d2b),
           appBarTheme: const AppBarTheme(
